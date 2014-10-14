@@ -1,19 +1,18 @@
-$(document).ready(function() {
-  function initialize() {
+(function() {
+  var app = window.app = {};
+
+  app.initialize = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
       var mapOptions = {
         center: {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         },
-        zoom: 8
+        zoom: 12
       };
 
       var map = new google.maps.Map($('#map-canvas')[0], mapOptions);
-
-      var apiKey = '710b4a78d179cd474289e9690d11b272';
-      var apiSecret ='c5f0f70bd447fc854f96d39a577ee0b9';
-      var url = 'http://ws.audioscrobbler.com/2.0/?method=geo.getevents&lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&api_key=' + apiKey + '&distance=' + 10 + '&format=json';
+      var url = 'http://localhost:3000/api/events?lat=' + position.coords.latitude + ' &long=' + position.coords.longitude
 
       $.ajax({
         url: url,
@@ -24,6 +23,11 @@ $(document).ready(function() {
             var latLong = new google.maps.LatLng(lat, long);
 
             var title = event.title;
+            var venue = event.venue;
+            var li = $('<li>' + venue.name + '</li>');
+
+            $('#locations').append(li);
+
             var info = new google.maps.InfoWindow({
               content: title
             });
@@ -31,17 +35,20 @@ $(document).ready(function() {
             var marker = new google.maps.Marker({
               position: latLong,
               map: map,
-              title: title
+              title: title,
+              animation: google.maps.Animation.DROP,
             });
 
             google.maps.event.addListener(marker, 'click', function() {
               info.open(map, marker);
+            });
+
+            google.maps.event.addListener(li, 'click', function() {
+              console.log(what);
             });
           });
         }
       });
     });
   }
-
-  google.maps.event.addDomListener(window, 'load', initialize);
-});
+})();
