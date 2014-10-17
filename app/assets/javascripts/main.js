@@ -1,7 +1,8 @@
 (function() {
   var app = window.app = {};
-  var app.map;
-  var app.pairs = {};
+  app.liMarkerPairs = {};
+  app.markerInfoPairs = {};
+  app.currentInfo;
 
   app.initialize = function() {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -25,6 +26,7 @@
   app.getEvents = function(lat, lng) {
     $.ajax({
       url: 'http://localhost:3000/api/events',
+      type: 'GET',
       data: {
         lat: lat,
         long: lng
@@ -32,7 +34,7 @@
       success: function(data) {
         _.each(data.events.event, function(event) {
           app.placeMarker(event);
-        }
+        });
       }
     });
   };
@@ -58,18 +60,12 @@
       animation: google.maps.Animation.DROP,
     });
 
-    app.pairs[li] = marker;
-
-    app.setUpListeners(marker, li);
-  };
-
-  app.setUpListeners = function(marker, li) {
     google.maps.event.addListener(marker, 'click', function() {
+      if(app.currentInfo) {
+        app.currentInfo.close();
+      }
+      app.currentInfo = info;
       info.open(app.map, marker);
     });
-
-    google.maps.event.addListener(li, 'click', function() {
-      info.open(app.map, app.pairs[li]);
-    });
-  }
+  };
 })();
