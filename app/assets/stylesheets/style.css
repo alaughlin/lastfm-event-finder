@@ -40,7 +40,7 @@ a {
 
 #loading {
   width: 200px;
-  margin: 0 auto;
+  margin: 20px auto;
   z-index: 1;
   background: #fff;
   opacity: 0.75;
