@@ -1,4 +1,4 @@
-html, body, h3, h4, div, ul, li, img {
+html, body, h3, h4, div, ul, li, img, a {
   padding: 0;
   border: 0;
   margin: 0;
@@ -19,6 +19,10 @@ h4 {
   font-weight: 500;
 }
 
+a {
+  text-decoration: none;
+}
+
 .group {
   display: block;
   content: '';
@@ -35,15 +39,19 @@ h4 {
 }
 
 #loading {
-  height: 100px;
-  position: absolute;
-  margin: auto;
+  width: 200px;
+  margin: 0 auto;
   z-index: 1;
-  display: none;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  background: #fff;
+  opacity: 0.75;
+  color: #000;
+  font-size: 18px;
+  padding: 5px;
+  display: block;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-weight: 700;
 }
 
 #locations {
@@ -51,13 +59,23 @@ h4 {
   z-index: 0;
   right: 0;
   bottom: 0;
-  margin-bottom: 20px;
+  margin: 0 5px 20px 0;
 }
 
 #locations > li {
-  padding: 10px;
   background: #fff;
   opacity: 0.75;
+}
+
+.event-link {
+  color: #000;
+  font-size: 18px;
+  padding: 5px;
+  display: block;
+}
+
+.event-link:hover {
+  text-decoration: underline;
 }
 
 .info > li {

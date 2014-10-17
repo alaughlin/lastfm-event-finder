@@ -2,7 +2,9 @@
   var app = window.app = {};
   app.currentInfo;
 
+
   app.initialize = function() {
+    $('#loading').html("Finding your location...");
     navigator.geolocation.getCurrentPosition(function(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -22,6 +24,7 @@
   };
 
   app.getEvents = function(lat, lng) {
+    $('#loading').html("Finding nearby events...");
     $.ajax({
       url: 'http://localhost:3000/api/events',
       type: 'GET',
@@ -33,6 +36,8 @@
         _.each(data.events.event, function(event) {
           app.placeMarker(event);
         });
+
+        $('#loading').hide();
       }
     });
   };
@@ -43,7 +48,7 @@
     var latLong = new google.maps.LatLng(lat, lng);
 
     var venue = event.venue;
-    var li = $('<li>' + venue.name + '</li>');
+    var li = $('<li><a class="event-link" href="">' + venue.name + '</a></li>');
     $('#locations').append(li);
 
     var infoContent = app.generateInfo(event);
@@ -69,7 +74,8 @@
       info.open(app.map, marker);
     });
 
-    li.on('click', function() {
+    li.on('click', 'a', function(event) {
+      event.preventDefault();
       if(app.currentInfo) {
         app.currentInfo.close();
       }
