@@ -1,4 +1,4 @@
-html, body, div, ul, li {
+html, body, h3, h4, div, ul, li, img {
   padding: 0;
   border: 0;
   margin: 0;
@@ -7,6 +7,22 @@ html, body, div, ul, li {
 
 ul {
   list-style: none;
+}
+
+h3 {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.group {
+  display: block;
+  content: '';
+  clear: both;
 }
 
 #map-canvas {
@@ -36,4 +52,18 @@ ul {
   right: 0;
   bottom: 0;
   margin-bottom: 20px;
+}
+
+#locations > li {
+  padding: 10px;
+  background: #fff;
+  opacity: 0.75;
+}
+
+.info > li {
+  float: left;
+}
+
+.info > li > img {
+  padding-right: 10px;
 }

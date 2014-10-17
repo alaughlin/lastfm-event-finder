@@ -1,7 +1,5 @@
 (function() {
   var app = window.app = {};
-  app.liMarkerPairs = {};
-  app.markerInfoPairs = {};
   app.currentInfo;
 
   app.initialize = function() {
@@ -48,24 +46,57 @@
     var li = $('<li>' + venue.name + '</li>');
     $('#locations').append(li);
 
-    var title = event.title;
+    var infoContent = app.generateInfo(event);
+
     var info = new google.maps.InfoWindow({
-      content: title
+      content: infoContent
     });
 
     var marker = new google.maps.Marker({
       position: latLong,
       map: app.map,
-      title: title,
+      title: event.title,
       animation: google.maps.Animation.DROP,
     });
 
+    // these should be refactored to be more DRY
     google.maps.event.addListener(marker, 'click', function() {
       if(app.currentInfo) {
         app.currentInfo.close();
       }
       app.currentInfo = info;
+      app.map.panTo(marker.getPosition());
       info.open(app.map, marker);
     });
+
+    li.on('click', function() {
+      if(app.currentInfo) {
+        app.currentInfo.close();
+      }
+      app.currentInfo = info;
+      app.map.panTo(marker.getPosition());
+      info.open(app.map, marker);
+    });
+  };
+
+  app.generateInfo = function (event) {
+    // should really use templating
+    var image = '<img src=' + event.image[2]['#text'] + '>';
+    var title = '<h3>' + event.title + '</h3>';
+    var date = event.startDate + '<br>';
+    var venue = '<a href=' + event.venue.website + '>' + event.venue.name+ '</a><br>';
+    var link = '<a href=' + event.url + '>Details</a>';
+    var artists = '';
+    if ($.isArray(event.artists.artist)) {
+      _.each(event.artists.artist, function(artist) {
+        artists += '<li>' + artist + '</li>';
+      });
+    }
+
+    if (artists.length > 1) {
+      artists = '<h4>Lineup:</h4><ul>' + artists + '</ul>';
+    }
+
+    return '<ul class="info group"><li>' + image + '</li><li>' + title + date + venue + artists + link + '</li><ul>';
   };
 })();
