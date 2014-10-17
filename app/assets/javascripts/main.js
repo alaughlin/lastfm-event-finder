@@ -26,7 +26,7 @@
   app.getEvents = function(lat, lng) {
     $('#loading').html("Finding nearby events...");
     $.ajax({
-      url: 'http://localhost:3000/api/events',
+      url: 'api/events',
       type: 'GET',
       data: {
         lat: lat,
@@ -37,7 +37,7 @@
           app.placeMarker(event);
         });
 
-        $('#loading').hide();
+        $('#loading').hide(); 
       }
     });
   };
